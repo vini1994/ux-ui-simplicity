@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { 
   CreditCard, 
@@ -33,6 +32,7 @@ import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Link } from "react-router-dom";
+import { triggerAllWebhooks } from "@/utils/webhookUtils";
 
 const Checkout = () => {
   const { toast } = useToast();
@@ -73,8 +73,47 @@ const Checkout = () => {
   const handlePurchase = () => {
     setIsLoading(true);
     
-    // Simulando processamento de pagamento
-    setTimeout(() => {
+    // Simulating checkout process and payment processing
+    setTimeout(async () => {
+      // Create the order data
+      const orderData = {
+        order_id: `#ORD-${Math.floor(Math.random() * 10000)}`,
+        customer: {
+          name: personalInfo.name || "Cliente",
+          email: personalInfo.email || "cliente@exemplo.com",
+          phone: personalInfo.phone || "Não informado"
+        },
+        payment: {
+          method: selectedPayment === "credit-card" ? "Cartão de crédito" : "PIX",
+          amount: 80.00,
+          status: "approved"
+        },
+        items: [
+          {
+            name: "ElementA",
+            price: 80.00,
+            quantity: 1
+          }
+        ],
+        created_at: new Date().toISOString()
+      };
+      
+      // Trigger webhooks for checkout completion
+      try {
+        await triggerAllWebhooks("checkout.completed", orderData);
+        console.log("Webhooks triggered successfully");
+      } catch (error) {
+        console.error("Error triggering webhooks:", error);
+      }
+      
+      // Also trigger payment-specific webhook
+      try {
+        await triggerAllWebhooks("payment.success", orderData.payment);
+        console.log("Payment webhooks triggered successfully");
+      } catch (error) {
+        console.error("Error triggering payment webhooks:", error);
+      }
+      
       setIsLoading(false);
       setShowSuccess(true);
     }, 1500);

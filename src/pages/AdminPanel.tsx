@@ -30,13 +30,15 @@ import {
   Clock,
   AlertCircle,
   Settings,
-  Home
+  Home,
+  Webhook
 } from "lucide-react";
 import AdminAuth from "@/components/admin/AdminAuth";
 import OrdersList from "@/components/admin/OrdersList";
 import CustomersList from "@/components/admin/CustomersList";
 import PaymentStatus from "@/components/admin/PaymentStatus";
 import AdminNavigation from "@/components/admin/AdminNavigation";
+import WebhookManager from "@/components/admin/WebhookManager";
 
 const AdminPanel = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -141,6 +143,10 @@ const AdminPanel = () => {
                 <CreditCard className="h-4 w-4" />
                 <span>Pagamentos</span>
               </TabsTrigger>
+              <TabsTrigger value="webhooks" className="flex items-center gap-2 data-[state=active]:bg-white">
+                <Webhook className="h-4 w-4" />
+                <span>Webhooks</span>
+              </TabsTrigger>
               <TabsTrigger value="settings" className="flex items-center gap-2 data-[state=active]:bg-white">
                 <Settings className="h-4 w-4" />
                 <span>Configurações</span>
@@ -157,6 +163,10 @@ const AdminPanel = () => {
             
             <TabsContent value="payments" className="p-4 pt-6">
               <PaymentStatus />
+            </TabsContent>
+            
+            <TabsContent value="webhooks" className="p-4 pt-6">
+              <WebhookManager />
             </TabsContent>
             
             <TabsContent value="settings" className="p-4 pt-6">
