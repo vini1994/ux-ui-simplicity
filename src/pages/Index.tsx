@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Settings } from "lucide-react";
+import { ShoppingCart, Settings, Package } from "lucide-react";
 
 const Index = () => {
   return (
@@ -12,7 +12,13 @@ const Index = () => {
           Experimente nosso novo sistema de checkout com uma experiência de usuário aprimorada.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4">
-          <Link to="/checkout">
+          <Link to="/products">
+            <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700">
+              <Package className="mr-2 h-5 w-5" />
+              Ver Produtos
+            </Button>
+          </Link>
+          <Link to="/checkout/prod-1">
             <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700">
               <ShoppingCart className="mr-2 h-5 w-5" />
               Ir para o Checkout
